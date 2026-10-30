@@ -1,3 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #134daa;
+  --color-ink: #162661;
+  --color-mist: #c4d7f2;
+  --color-muted: #6380aa;
+  --color-paper: #f6f5f0;
+  --color-charcoal: #4b4b4b;
+  --font-display: "Baloo Bhaijaan 2", "IBM Plex Sans Arabic", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  --breakpoint-desktop: 900px;
+}
+
 :root {
   color-scheme: light;
 

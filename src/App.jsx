@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { BUILDING_IDS } from "./data/campus.js";
-import mascot from "./assets/daleel-mascot.png";
+import mascot from "./assets/ga3fr-greet-hero.png";
+import desktopMascot from "./assets/ga3fr-hero-desktop.png";
 import "./App.css";
 
 const importScene = () => import("./scene/UniversityScene.jsx");
@@ -98,52 +99,83 @@ function App() {
 
       {landingMounted && (
         <div
-          className={`landing${landingLeaving ? " landing--leaving" : ""}`}
+          className={`fixed inset-0 z-30 flex flex-col items-center overflow-y-auto bg-linear-to-b from-white to-paper px-5 pt-5 pb-[max(20px,env(safe-area-inset-bottom))] font-body text-ink transition-[opacity,visibility] duration-[470ms] desktop:px-12 desktop:py-12 ${
+            landingLeaving ? "pointer-events-none invisible opacity-0" : ""
+          }`}
           aria-hidden={landingLeaving}
           inert={landingLeaving}
         >
-          <section className="landing__card" aria-labelledby="landing-title">
-            <img
-              className="landing__mascot"
-              src={mascot}
-              alt=""
-              aria-hidden="true"
-              width="334"
-              height="388"
-            />
+          <section
+            className="grid w-full max-w-[680px] flex-1 grid-rows-[1fr_auto] text-center desktop:max-w-[1360px] desktop:grid-cols-2 desktop:grid-rows-[auto_auto] desktop:content-center desktop:items-center desktop:gap-x-16"
+            aria-labelledby="landing-title"
+          >
+            <div className="flex flex-col items-center justify-center desktop:contents">
+              <picture className="relative block aspect-[465/370] w-[clamp(210px,58vw,260px)] shrink-0 desktop:col-start-2 desktop:row-span-2 desktop:aspect-[3/2] desktop:w-[110%] desktop:justify-self-end">
+                <source media="(min-width: 900px)" srcSet={desktopMascot} />
+                <img
+                  className="pointer-events-none h-full w-full select-none object-contain desktop:object-cover"
+                  src={mascot}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </picture>
 
-            <h1 id="landing-title" className="landing__title">
-              إلى أين تذهب؟
-            </h1>
-            <p className="landing__subtitle">
-              اختر مبنى وسنأخذك إليه من البوابة.
-            </p>
+              <div className="mt-4 desktop:col-start-1 desktop:row-start-1 desktop:mt-0">
+                <h1
+                  id="landing-title"
+                  className="mb-2 font-display text-[clamp(2.4rem,10vw,3rem)] font-bold leading-[1.15] text-balance text-brand desktop:mb-4 desktop:text-[clamp(4rem,5.5vw,5.5rem)]"
+                >
+                  إلى أين نذهب؟
+                </h1>
+                <p className="mx-auto max-w-[30ch] text-base font-medium leading-relaxed text-balance text-charcoal desktop:text-2xl">
+                  اختر مبنى وسأخذك إليه
+                </p>
+              </div>
+            </div>
 
-            <select
-              className="building-select"
-              value={selection}
-              onChange={(event) => setSelection(event.target.value)}
-              aria-label="اختر المبنى"
-              disabled={landingLeaving}
-            >
-              <option value="" disabled>
-                اختر المبنى
-              </option>
-              {BUILDING_IDS.map((id) => (
-                <option key={id} value={id}>
-                  {id}
-                </option>
-              ))}
-            </select>
+            <div className="mt-3 grid w-full max-w-[440px] justify-self-center gap-3 desktop:col-start-1 desktop:row-start-2 desktop:mt-10 desktop:max-w-[520px]">
+              <div className="relative">
+                <select
+                  className="min-h-14 w-full cursor-pointer appearance-none rounded-xl border-2 border-mist bg-white py-3 pr-11 pl-4 text-right font-body text-[17px] font-bold text-ink transition-colors hover:border-muted focus-visible:ring-2 focus-visible:ring-muted focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                  value={selection}
+                  onChange={(event) => setSelection(event.target.value)}
+                  aria-label="اختر المبنى"
+                  disabled={landingLeaving}
+                >
+                  <option value="" disabled>
+                    اختر المبنى
+                  </option>
+                  {BUILDING_IDS.map((id) => (
+                    <option key={id} value={id}>
+                      {id}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 text-muted"
+                >
+                  <path
+                    d="m5 7.5 5 5 5-5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
 
-            <button
-              type="button"
-              className="start-button"
-              onClick={startTour}
-              disabled={!selection || landingLeaving}
-            >
-              انطلق
-            </button>
+              <button
+                type="button"
+                className="min-h-14 w-full cursor-pointer rounded-xl bg-brand py-3 font-body text-[17px] font-bold text-white shadow-[0_4px_0_#162661] transition enabled:hover:bg-ink enabled:hover:shadow-[0_4px_0_#6380aa] enabled:active:translate-y-0.5 enabled:active:shadow-[0_2px_0_#6380aa] focus-visible:ring-2 focus-visible:ring-muted focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-mist disabled:text-muted disabled:shadow-none"
+                onClick={startTour}
+                disabled={!selection || landingLeaving}
+              >
+                لننطلق
+              </button>
+            </div>
           </section>
         </div>
       )}
