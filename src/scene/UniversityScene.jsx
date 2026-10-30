@@ -61,7 +61,7 @@ export default function UniversityScene({
           dampingFactor={0.08}
           rotateSpeed={0.65}
           minDistance={18}
-          maxDistance={300}
+          maxDistance={600}
           minPolarAngle={0.1}
           maxPolarAngle={1.38}
         />
