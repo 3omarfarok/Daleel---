@@ -13,6 +13,7 @@ export default function UniversityScene({
   selectedId,
   onArrived,
   onSelect,
+  onReady,
 }) {
   const exploring = phase === "explore";
 
@@ -43,7 +44,7 @@ export default function UniversityScene({
         />
 
         <Suspense fallback={null}>
-          <UniversityModel />
+          <UniversityModel onReady={onReady} />
         </Suspense>
 
         {exploring && selectedId && (

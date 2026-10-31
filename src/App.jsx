@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { BUILDING_IDS } from "./data/campus.js";
 import mascot from "./assets/ga3fr-greet-hero.png";
 import desktopMascot from "./assets/ga3fr-hero-desktop.png";
+import singingMascot from "./assets/ga3fr-singing.png";
 import "./App.css";
 
 const importScene = () => import("./scene/UniversityScene.jsx");
@@ -16,7 +17,9 @@ function App() {
   const [selection, setSelection] = useState("");
   const [landingMounted, setLandingMounted] = useState(true);
   const [sceneMounted, setSceneMounted] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
   const landingTimer = useRef(null);
+  const markSceneReady = useCallback(() => setSceneReady(true), []);
 
   useEffect(() => () => clearTimeout(landingTimer.current), []);
 
@@ -60,21 +63,32 @@ function App() {
     <main className="app">
       <div className="map-container">
         {sceneMounted && (
-          <Suspense
-            fallback={
-              <div className="scene-loading" role="status">
-                جارٍ تحميل الخريطة…
-              </div>
-            }
-          >
+          <Suspense fallback={null}>
             <UniversityScene
               phase={phase}
               mode={mode}
               selectedId={selection}
               onArrived={() => setPhase("explore")}
               onSelect={selectOnMap}
+              onReady={markSceneReady}
             />
           </Suspense>
+        )}
+
+        {sceneMounted && !sceneReady && (
+          <div className="scene-loading" role="status">
+            <div className="scene-loading__art">
+              <img src={singingMascot} alt="" aria-hidden="true" />
+            </div>
+            <p className="scene-loading__label" lang="en">
+              loading
+              <span className="scene-loading__dots" aria-hidden="true">
+                <span className="scene-loading__dot" />
+                <span className="scene-loading__dot" />
+                <span className="scene-loading__dot" />
+              </span>
+            </p>
+          </div>
         )}
       </div>
 
@@ -110,10 +124,11 @@ function App() {
             aria-labelledby="landing-title"
           >
             <div className="flex flex-col items-center justify-center desktop:contents">
-              <picture className="relative block aspect-[465/370] w-[clamp(210px,58vw,260px)] shrink-0 desktop:col-start-2 desktop:row-span-2 desktop:aspect-[3/2] desktop:w-[110%] desktop:justify-self-end">
+              {/* The source art has transparent padding around the mascot. */}
+              <picture className="relative block aspect-[440/345] w-[clamp(210px,58vw,260px)] shrink-0 overflow-hidden desktop:col-start-2 desktop:row-span-2 desktop:aspect-[820/514] desktop:w-[110%] desktop:justify-self-end">
                 <source media="(min-width: 900px)" srcSet={desktopMascot} />
                 <img
-                  className="pointer-events-none h-full w-full select-none object-contain desktop:object-cover"
+                  className="pointer-events-none h-full w-full scale-[2.2] select-none object-contain desktop:scale-100 desktop:object-cover"
                   src={mascot}
                   alt=""
                   aria-hidden="true"

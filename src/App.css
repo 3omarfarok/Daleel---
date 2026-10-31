@@ -35,28 +35,64 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 5;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 4px;
   transform: translate(-50%, -50%);
-  border: 2px solid var(--color-soft-sky);
-  border-radius: var(--radius);
-  background: var(--color-paper-white);
   color: var(--color-deep-navy);
-  font-size: 15px;
-  font-weight: 700;
-  box-shadow: 4px 4px 0 var(--color-soft-sky);
+  text-align: center;
+  pointer-events: none;
 }
 
-.scene-loading::before {
-  content: "";
-  width: 24px;
-  height: 24px;
-  border: 3px solid var(--color-soft-sky);
-  border-top-color: var(--color-daleel-blue);
+.scene-loading__art {
+  width: clamp(170px, 44vw, 220px);
+  aspect-ratio: 351 / 391;
+  overflow: hidden;
+}
+
+.scene-loading__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.4);
+}
+
+.scene-loading__label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  direction: ltr;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.scene-loading__dots {
+  display: inline-flex;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.scene-loading__dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  background: var(--color-daleel-blue);
+  opacity: 0;
+  animation: loading-dot 1.2s ease-in-out infinite;
+}
+
+.scene-loading__dot:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.scene-loading__dot:nth-child(3) {
+  animation-delay: 0.32s;
 }
 
 /* Map chrome */
@@ -240,9 +276,18 @@
   }
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+@keyframes loading-dot {
+  0%,
+  20% {
+    opacity: 0;
+  }
+  35%,
+  65% {
+    opacity: 1;
+  }
+  85%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -286,5 +331,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .scene-loading__dot {
+    opacity: 1;
+    animation: none;
   }
 }
